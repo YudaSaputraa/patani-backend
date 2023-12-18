@@ -17,7 +17,7 @@ const getAllBuyers = async (req, res) => {
         const buyer = await buyers.findAll();
         res.status(200).json({
             status: "success",
-            message: "Sucessfull fetch all data buyer",
+            message: "Sucessfully fetch all data buyer",
             buyers: buyer,
         })
     } catch (error) {
