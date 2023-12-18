@@ -98,9 +98,9 @@ const getSellerById = async (req, res) => {
 const postBuyer = async (req, res) => {
     try {
         let imageUrl;
+        const { email, password, nama, alamat, kordinat, no_hp } = req.body;
         if (req.file) {
             const files = req.file.path;
-            const { email, password, nama, alamat, kordinat, no_hp } = req.body;
 
             const uploadFile = await cloudinary.uploader.upload(files, {
                 folder: 'user_profile_image'
@@ -108,22 +108,23 @@ const postBuyer = async (req, res) => {
 
             //didapat image URL
             imageUrl = uploadFile.secure_url;
-            const newBuyer = await buyers.create({
-                email: email,
-                password: password,
-                name: nama,
-                alamat: alamat,
-                kordinat: kordinat,
-                no_hp: no_hp,
-                image: imageUrl
-            });
-
-            res.status(201).json({
-                status: "success",
-                message: "sucessfull register",
-                newBuyer
-            });
         }
+        const newBuyer = await buyers.create({
+            email: email,
+            password: password,
+            name: nama,
+            alamat: alamat,
+            kordinat: kordinat,
+            no_hp: no_hp,
+            image: imageUrl
+        });
+
+        res.status(201).json({
+            status: "success",
+            message: "sucessfull register",
+            newBuyer
+        });
+
     } catch (error) {
         console.log(`Error : ${error.message}`);
         res.status(500).json({ message: 'Internal server error' });
@@ -134,9 +135,9 @@ const postBuyer = async (req, res) => {
 const postSeller = async (req, res) => {
     try {
         let imageUrl;
+        const { email, password, nama, alamat, kordinat, no_hp, no_rekening } = req.body;
         if (req.file) {
             const files = req.file.path;
-            const { email, password, nama, alamat, kordinat, no_hp, no_rekening } = req.body;
             const uploadFile = await cloudinary.uploader.upload(files,
                 {
                     folder: 'user_profile_image'
@@ -144,23 +145,24 @@ const postSeller = async (req, res) => {
 
             //didapat image URL
             imageUrl = uploadFile.secure_url;
-            const newSeller = await sellers.create({
-                email: email,
-                password: password,
-                name: nama,
-                alamat: alamat,
-                kordinat: kordinat,
-                no_hp: no_hp,
-                no_rekening: no_rekening,
-                image: imageUrl
-            });
-            // sellers.push(newSeller);
-            res.status(201).json({
-                status: "success",
-                message: "sucessfull register Seller",
-                newSeller
-            })
         }
+        const newSeller = await sellers.create({
+            email: email,
+            password: password,
+            name: nama,
+            alamat: alamat,
+            kordinat: kordinat,
+            no_hp: no_hp,
+            no_rekening: no_rekening,
+            image: imageUrl
+        });
+        // sellers.push(newSeller);
+        res.status(201).json({
+            status: "success",
+            message: "sucessfull register Seller",
+            newSeller
+        })
+
     } catch (error) {
         console.log(`Error : ${error.message}`);
     }
