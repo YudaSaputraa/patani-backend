@@ -9,7 +9,7 @@ const upload = Multer({
         cb(null, file.originalname);
     },
     limits: {
-        fileSize: 5 * 1024 * 1024, //dibawah 5MB
+        fileSize: 2 * 1024 * 1024, //dibawah 2MB
     }
 });
 

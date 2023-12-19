@@ -1,13 +1,14 @@
 const express = require('express');
 const buyers = require('../model/buyer_model');
 const sellers = require('../model/seller_model');
+const cloudinary = require("../utils/cloudinary_config");
+const bcrypt = require('bcrypt');
 const router = express.Router();
 const app = express();
 const cloudStorageConfig = require("../utils/cloudStorage_config");
 const { Bucket } = require('@google-cloud/storage');
 
 const { promisify } = require('util');
-const cloudinary = require("../utils/cloudinary_config");
 const upload = require("../middleware/image_upload");
 
 
@@ -108,12 +109,14 @@ const postBuyer = async (req, res) => {
                 folder: 'user_profile_image'
             });
 
+
             //didapat image URL
             imageUrl = uploadFile.secure_url;
         }
+        const encryptPassword = await bcrypt.hash(password, 5);
         const newBuyer = await buyers.create({
             email: email,
-            password: password,
+            password: encryptPassword,
             name: nama,
             alamat: alamat,
             kordinat: kordinat,
@@ -148,9 +151,11 @@ const postSeller = async (req, res) => {
             //didapat image URL
             imageUrl = uploadFile.secure_url;
         }
+        const encryptPassword = await bcrypt.hash(password, 5);
+
         const newSeller = await sellers.create({
             email: email,
-            password: password,
+            password: encryptPassword,
             name: nama,
             alamat: alamat,
             kordinat: kordinat,
@@ -175,9 +180,7 @@ const loginHandler = async (req, res) => {
     try {
 
         const { email, password } = req.body;
-
-        console.log(`email ${email}`);
-        console.log(`password ${password}`);
+        console.log(`password : ${password}`)
         const buyerUser = await buyers.findOne({
             where: {
                 email: email
@@ -188,23 +191,31 @@ const loginHandler = async (req, res) => {
                 email: email
             }
         });
-        if (buyerUser && buyerUser.password === password) {
-            res.status(200).json({
-                status: "success",
-                message: "Login Buyer Success!",
-                buyerUser
-            });
-        } else if (sellerUser && sellerUser.password === password) {
-            res.status(200).json({
-                status: "success",
-                message: "Login Seller Success!",
-                sellerUser: sellerUser
-            });
+
+        if (buyerUser) {
+            const decryptPasswordBuyer = await bcrypt.compare(password, buyerUser.password);
+            if (decryptPasswordBuyer) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Login Buyer Success!",
+                    buyerUser
+                });
+            }
+        } else if (sellerUser) {
+            const decryptPasswordSeller = await bcrypt.compare(password, sellerUser.password);
+            if (decryptPasswordSeller) {
+                res.status(200).json({
+                    status: "success",
+                    message: "Login Seller Success!",
+                    sellerUser: sellerUser
+                });
+            }
         } else {
             const err = new Error("Wrong email or password");
             err.statusCode = 400;
             throw err;
         }
+
     } catch (error) {
         res.status(error.statusCode || 500).json({
             status: "error",
