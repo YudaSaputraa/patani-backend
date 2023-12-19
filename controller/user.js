@@ -316,12 +316,12 @@ const updateBuyer = async (req, res) => {
             // Dapatkan URL gambar baru
             imageUrl = uploadFile.secure_url;
         }
-
+        const encryptPassword = await bcrypt.hash(password, 5);
         // Buat objek yang berisi perubahan data
         const { email, password, nama, alamat, kordinat, no_hp } = req.body;
         const updatedData = {
             email,
-            password,
+            password: encryptPassword,
             name: nama,
             alamat,
             kordinat,
@@ -375,10 +375,10 @@ const updateSeller = async (req, res) => {
             imageUrl = uploadFile.secure_url;
         }
         const { email, password, nama, alamat, kordinat, no_hp, no_rekening } = req.body;
-        console.log(`name update : ${nama}`);
+        const encryptPassword = await bcrypt.hash(password, 5);
         const updatedData = {
             email,
-            password,
+            password: encryptPassword,
             name: nama,
             alamat,
             kordinat,
