@@ -5,7 +5,7 @@ const association = require("./utils/assoc_db");
 require('dotenv').config();
 
 const PORT = process.env.PORT;
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(userRoutes)
 app.use((req, res, next) => {

@@ -11,6 +11,8 @@ const cloudinary = require("../utils/cloudinary_config");
 const upload = require("../middleware/image_upload");
 
 
+
+
 //get all pembeli data
 const getAllBuyers = async (req, res) => {
     try {
@@ -169,9 +171,13 @@ const postSeller = async (req, res) => {
 };
 
 const loginHandler = async (req, res) => {
+
     try {
+
         const { email, password } = req.body;
 
+        console.log(`email ${email}`);
+        console.log(`password ${password}`);
         const buyerUser = await buyers.findOne({
             where: {
                 email: email

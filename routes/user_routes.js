@@ -69,7 +69,7 @@ router.get("/product/detail/:productId", getProductDetailById);
 
 router.post("/registerBuyer", upload.single('file'), postBuyer);
 router.post("/registerSeller", upload.single('file'), postSeller);
-router.post("/login", loginHandler);
+router.post("/login", upload.none(), loginHandler);
 router.post("/newProduct", upload.single('file'), postProduct)
 router.post("/newTesti", postTestimoni);
 router.post("/newTransaction", newTransaction);
