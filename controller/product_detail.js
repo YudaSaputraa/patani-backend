@@ -7,13 +7,11 @@ const sellers = require("../model/seller_model");
 const getProductDetailById = async (req, res) => {
     try {
         const { productId } = req.params;
-        const productDetail = await products.findByPk(productId, {
-            include: [
-                {
-                    model: products,
-                    attributes: ['product_name', 'price', 'stock', 'description', 'image']
-                }
-            ]
+        const productDetail = await products.findOne({
+            where: {
+                id: productId
+            },
+
         });
 
         if (!productDetail) {
