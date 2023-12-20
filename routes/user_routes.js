@@ -50,7 +50,8 @@ const { getAllCart } = require('../controller/cart');
 
 const {
     getProductDetailById,
-    newBidProduct
+    newBidProduct,
+    approveBidRequest
 } = require('../controller/product_detail');
 
 router.get("/buyers", getAllBuyers);
@@ -71,22 +72,22 @@ router.post("/registerBuyer", upload.single('file'), postBuyer);
 router.post("/registerSeller", upload.single('file'), postSeller);
 router.post("/login", upload.none(), loginHandler);
 router.post("/newProduct", upload.single('file'), postProduct)
-router.post("/newTesti", postTestimoni);
-router.post("/newTransaction", newTransaction);
+router.post("/newTesti", upload.none(), postTestimoni);
+router.post("/newTransaction", upload.none(), newTransaction);
 router.post("/newTransactionData/:buyerId", upload.single('file'), postTransactionData);
-router.post("/bidRequest/:id_product", newBidProduct)
+router.post("/bidRequest/:id_product", upload.none(), newBidProduct)
 
-
-router.delete("/deleteBuyer/:buyerId", deleteBuyerUser);
-router.delete("/deleteSeller/:sellerId", deleteSellerUser);
-router.delete("/deleteProduct/:productId", deleteProduct);
+router.delete("/deleteBuyer/:buyerId",  deleteBuyerUser);
+router.delete("/deleteSeller/:sellerId",  deleteSellerUser);
+router.delete("/deleteProduct/:productId",deleteProduct);
 router.delete("/deleteTransaction/:transactionId", deleteTransaction);
 router.delete("/deleteTesti/:testiId", deleteTesti);
 
-router.put('/update/buyer/:id', updateBuyer);
-router.put('/update/seller/:id', updateSeller);
-router.put('/update/product/:id', editProduct);
-router.put('/verifyPayment/:transactionId', verifyParment);
+router.put('/update/buyer/:id', upload.none(), updateBuyer);
+router.put('/update/seller/:id', upload.none(), updateSeller);
+router.put('/update/product/:id',  upload.none(), editProduct);
+router.put('/verifyPayment/:transactionId', upload.none(), verifyParment);
+router.put('/approve/:bidRequestId', upload.none(), approveBidRequest)
 
 
 module.exports = router;

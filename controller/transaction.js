@@ -60,12 +60,16 @@ const getAllTransactionById = async (req, res) => {
 
 const newTransaction = async (req, res) => {
     try {
-        // const { count, productId, sellerId } = req.body;
-        const count = req.body.count;
+        // const { qty, productId, sellerId } = req.body;
+        const qty = req.body.qty;
         const productId = req.body.productId;
         const sellerId = req.body.sellerId;
 
-        const product = await products.findByPk(productId);
+        const product = await products.findOne({
+            where: {
+                id: productId
+            }
+        });
 
         if (product == null) {
             return res.status(400).json({
@@ -74,10 +78,10 @@ const newTransaction = async (req, res) => {
                 product
             });
         }
-        const total_price = product.price * count;
+        const total_price = product.price * qty;
 
         const newTransaction = await transactions.create({
-            count: count,
+            qty: qty,
             total_price: total_price,
             productId: productId,
             sellerId: sellerId,

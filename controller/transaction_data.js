@@ -20,7 +20,7 @@ const getAllTransactionData = async (req, res) => {
                     include: [
                         {
                             model: transactions,
-                            attributes: ['productId', 'count', 'total_price'],
+                            attributes: ['productId', 'qty', 'total_price'],
                             include: [
                                 {
                                     model: products,

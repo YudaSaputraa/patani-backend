@@ -8,7 +8,7 @@ const Transaction = my_db.define("transactions", {
         allowNull: false,
         autoIncrement: true,
     },
-    count: {
+    qty: {
         type: sequelize.STRING,
         allowNull: false,
     },

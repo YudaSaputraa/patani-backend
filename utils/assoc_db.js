@@ -42,8 +42,8 @@ testimoni.belongsTo(transaction, { foreignKey: { name: 'transactionId', allowNul
 cart.hasOne(transactionData, { foreignKey: { name: 'cartId', allowNull: false } });
 transactionData.belongsTo(cart, { foreignKey: { name: 'cartId', allowNull: false } });
 
-transaction.hasMany(cart, { foreignKey: { name: 'transactionId', allowNull: false } });
-cart.belongsTo(transaction, { foreignKey: { name: 'transactionId', allowNull: false } });
+transaction.hasMany(cart, { foreignKey: { name: 'transactionId', allowNull: true } });
+cart.belongsTo(transaction, { foreignKey: { name: 'transactionId', allowNull: true } });
 
 // buyer.hasMany(cart, { foreignKey: { name: 'buyerId', allowNull: false } });
 // cart.belongsTo(buyer, { foreignKey: { name: 'buyerId', allowNull: false } });
@@ -53,6 +53,13 @@ product_detail.belongsTo(product, { foreignKey: 'productId' });
 
 buyer.hasMany(transactionData, { foreignKey: { name: 'buyerId', allowNull: false } })
 transactionData.belongsTo(buyer, { foreignKey: { name: 'buyerId', allowNull: false } })
+
+product_detail.hasMany(cart, { foreignKey: { name: 'offerId', allowNull: true } });
+cart.belongsTo(product_detail, { foreignKey: { name: 'offerId', allowNull: true } });
+
+seller.hasOne(product_detail, { foreignKey: { name: 'sellerId', allowNull: false } });
+product_detail.belongsTo(seller, { foreignKey: { name: 'sellerId', allowNull: false } });
+
 
 const association = async () => {
     try {
