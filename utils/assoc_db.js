@@ -9,7 +9,7 @@ const transaction = require('../model/transaction_model');
 const transactionData = require('../model/transaction_data_model');
 const cart = require("../model/cart_model");
 const product_detail = require("../model/product_detail_model");
-
+const orders = require("../model/order_model");
 
 const categories = [
     { category_name: "Sayur Hijau" },
@@ -61,6 +61,16 @@ seller.hasOne(product_detail, { foreignKey: { name: 'sellerId', allowNull: false
 product_detail.belongsTo(seller, { foreignKey: { name: 'sellerId', allowNull: false } });
 
 
+buyer.hasMany(orders, { foreignKey: { name: 'buyerId', allowNull: false } })
+orders.belongsTo(buyer, { foreignKey: { name: 'buyerId', allowNull: false } })
+
+seller.hasMany(orders, { foreignKey: { name: 'sellerId', allowNull: false } })
+orders.belongsTo(seller, { foreignKey: { name: 'sellerId', allowNull: false } })
+
+product.hasMany(orders, { foreignKey: { name: 'productId', allowNull: false } })
+orders.belongsTo(product, { foreignKey: { name: 'productId', allowNull: false } })
+
+
 const association = async () => {
     try {
         await my_db.sync({ force: false });
@@ -71,6 +81,7 @@ const association = async () => {
         transactionData.bulkCreate(transactionData);
         cart.bulkCreate(cart);
         product_detail.bulkCreate(product_detail);
+        orders.bulkCreate(orders);
         // category.bulkCreate(categories);
         product.bulkCreate(product);
     } catch (error) {
