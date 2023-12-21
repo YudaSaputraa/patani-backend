@@ -94,8 +94,8 @@ router.delete("/deleteProduct/:productId", deleteProduct);
 router.delete("/deleteTransaction/:transactionId", deleteTransaction);
 router.delete("/deleteTesti/:testiId", deleteTesti);
 
-router.put('/update/buyer/:id', upload.none(), updateBuyer);
-router.put('/update/seller/:id', upload.none(), updateSeller);
+router.put('/update/buyer/:id', upload.single('file'), updateBuyer);
+router.put('/update/seller/:id', upload.single('file'), updateSeller);
 router.put('/update/product/:id', upload.none(), editProduct);
 router.put('/verifyPayment/:transactionId', upload.none(), verifyParment);
 router.put('/approve/:bidRequestId', upload.none(), approveBidRequest)
