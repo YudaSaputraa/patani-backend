@@ -316,12 +316,9 @@ const updateBuyer = async (req, res) => {
             // Dapatkan URL gambar baru
             imageUrl = uploadFile.secure_url;
         }
-        const encryptPassword = await bcrypt.hash(password, 5);
-        // Buat objek yang berisi perubahan data
         const { email, password, nama, alamat, kordinat, no_hp } = req.body;
-        const updatedData = {
+        let updatedData = {
             email,
-            password: encryptPassword,
             name: nama,
             alamat,
             kordinat,
@@ -329,8 +326,9 @@ const updateBuyer = async (req, res) => {
             image: imageUrl
         };
 
-        if (imageUrl) {
-            updatedData.image = imageUrl;
+        if (password) {
+            const encryptPassword = await bcrypt.hash(password, 5);
+            updatedData.password = encryptPassword;
         }
 
         const result = await buyers.update(updatedData, {
@@ -363,6 +361,7 @@ const updateBuyer = async (req, res) => {
     }
 };
 
+
 const updateSeller = async (req, res) => {
     try {
         const { id } = req.params;
@@ -375,10 +374,10 @@ const updateSeller = async (req, res) => {
             imageUrl = uploadFile.secure_url;
         }
         const { email, password, nama, alamat, kordinat, no_hp, no_rekening } = req.body;
-        const encryptPassword = await bcrypt.hash(password, 5);
-        const updatedData = {
+
+        // Buat objek data yang akan diperbarui
+        let updatedData = {
             email,
-            password: encryptPassword,
             name: nama,
             alamat,
             kordinat,
@@ -386,16 +385,21 @@ const updateSeller = async (req, res) => {
             no_rekening,
             image: imageUrl
         };
-        if (imageUrl) {
-            updatedData.image = imageUrl;
+
+        // Jika ada password yang diberikan, hash password baru
+        if (password) {
+            const encryptPassword = await bcrypt.hash(password, 5);
+            updatedData.password = encryptPassword;
         }
 
+        // Lakukan pembaruan data di database
         const result = await sellers.update(updatedData, {
             where: {
                 id: id
             }
         });
 
+        // Periksa apakah ada baris yang terpengaruh (diupdate)
         if (result[0] === 0) {
             return res.status(404).json({
                 status: 'failed',
@@ -405,6 +409,7 @@ const updateSeller = async (req, res) => {
             });
         }
 
+        // Ambil data penjual terbaru setelah update
         const updatedSeller = await sellers.findByPk(id);
         res.status(200).json({
             status: 'success',
@@ -416,6 +421,7 @@ const updateSeller = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 
 
 
