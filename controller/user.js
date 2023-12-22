@@ -211,9 +211,11 @@ const loginHandler = async (req, res) => {
                 });
             }
         } else {
-            const err = new Error("Wrong email or password");
-            err.statusCode = 400;
-            throw err;
+            res.status(400).json({
+                status: "failed",
+                message: "Wrong email or password!",
+
+            });
         }
 
     } catch (error) {
