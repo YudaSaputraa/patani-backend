@@ -12,6 +12,12 @@ const { promisify } = require('util');
 const upload = require("../middleware/image_upload");
 
 
+const initialEnpoint = async (req, res) => {
+    res.status(200).json({
+        status: "success",
+        message: "Connected to Patani-Backend!",
+    })
+}
 
 
 //get all pembeli data
@@ -453,6 +459,6 @@ module.exports = {
     deleteBuyerUser,
     deleteSellerUser,
     updateBuyer,
-    updateSeller
-
+    updateSeller,
+    initialEnpoint
 };

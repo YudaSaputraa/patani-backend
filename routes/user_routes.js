@@ -16,7 +16,8 @@ const {
     deleteBuyerUser,
     deleteSellerUser,
     updateBuyer,
-    updateSeller
+    updateSeller,
+    initialEnpoint
 } = require("../controller/user");
 
 const {
@@ -70,6 +71,7 @@ router.get("/transactions", getAllTransaction);
 router.get("/transactionsData/:buyerId", getAllTransactionData);
 router.get("/carts/:id_cart_params", getAllCart);
 router.get("/orders", getAllOrder);
+router.get("/", initialEnpoint);
 
 router.get("/buyer/:buyerId", getBuyerById);
 router.get("/seller/:sellerId", getSellerById);
