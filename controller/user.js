@@ -201,6 +201,13 @@ const loginHandler = async (req, res) => {
                     buyerUser
                 });
             }
+            else {
+                res.status(400).json({
+                    status: "failed",
+                    message: "Wrong email or password!",
+
+                });
+            }
         } else if (sellerUser) {
             const decryptPasswordSeller = await bcrypt.compare(password, sellerUser.password);
             if (decryptPasswordSeller) {
@@ -208,6 +215,12 @@ const loginHandler = async (req, res) => {
                     status: "success",
                     message: "Login Seller Success!",
                     sellerUser: sellerUser
+                });
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    message: "Wrong email or password!",
+
                 });
             }
         } else {
