@@ -15,7 +15,7 @@ const upload = require("../middleware/image_upload");
 const initialEnpoint = async (req, res) => {
     res.status(200).json({
         status: "success",
-        message: "Connected to Patani-Backend!",
+        message: "Connected to Patani-Backend!!",
     })
 }
 
